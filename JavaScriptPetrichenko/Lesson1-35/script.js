@@ -147,3 +147,4 @@ const soldier = {
 
 const john = Object.create(soldier)
 john.sayHello()
+
