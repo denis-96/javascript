@@ -63,9 +63,9 @@ window.addEventListener("DOMContentLoaded", (e) => {
 
     function getZero(num) {
       if (num >= 0 && num < 10) {
-        return `0${num}`
+        return `0${num}`;
       }
-      return num
+      return num;
     }
 
     function updateClock() {
@@ -80,6 +80,64 @@ window.addEventListener("DOMContentLoaded", (e) => {
       hours.innerHTML = getZero(t.hours);
       minutes.innerHTML = getZero(t.minutes);
       seconds.innerHTML = getZero(t.seconds);
+    }
+
+    // Modal Box
+    const modal = document.querySelector(".modal");
+    const modalOpenBtns = document.querySelectorAll("[data-modal]");
+    const modalCloseBtns = document.querySelectorAll("[data-close]");
+
+    modalOpenBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        openModal(modal);
+      });
+    });
+    modalCloseBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        closeModal(modal);
+      });
+    });
+
+    modal.addEventListener("click", (event) => {
+      const target = event.target;
+      if (target.matches(".modal")) {
+        closeModal(target);
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.code === "Escape" && modal.classList.contains("show")) {
+        closeModal(modal);
+      }
+    });
+
+    const modalTimerId = setTimeout(() => openModal(modal), 5000);
+
+    window.addEventListener("scroll", showModalByScroll);
+
+    function showModalByScroll() {
+      if (
+        window.pageYOffset + document.documentElement.clientHeight >=
+        document.documentElement.scrollHeight -1
+      ) {
+        openModal(modal)
+        window.removeEventListener('scroll', showModalByScroll)
+      }
+    }
+
+    function closeModal(modal) {
+      // modal.classList.toggle("show");
+      modal.classList.remove("show");
+      modal.classList.add("hide");
+      document.body.style.overflow = "";
+    }
+
+    function openModal(modal) {
+      // modal.classList.toggle("show");
+      modal.classList.remove("hide");
+      modal.classList.add("show");
+      document.body.style.overflow = "hidden";
+      clearInterval(modalTimerId);
     }
   }
 
