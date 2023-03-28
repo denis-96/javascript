@@ -74,6 +74,3 @@ console.log(myArray.sum())
 
 // Цепочка прототипов
 // myArray --> NumbersArray --> Array --> Object
-
-
-// Что такое прототип

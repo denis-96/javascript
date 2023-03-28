@@ -87,23 +87,17 @@ window.addEventListener("DOMContentLoaded", (e) => {
   // Modal Box
   const modal = document.querySelector(".modal");
   const modalOpenBtns = document.querySelectorAll("[data-modal]");
-  const modalCloseBtns = document.querySelectorAll("[data-close]");
 
   modalOpenBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       openModal(modal);
     });
   });
-  modalCloseBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      closeModal(modal);
-    });
-  });
 
   modal.addEventListener("click", (event) => {
     const target = event.target;
-    if (target.matches(".modal")) {
-      closeModal(target);
+    if (target.matches(".modal") || target.getAttribute("data-close") === "") {
+      closeModal(modal);
     }
   });
 
@@ -113,7 +107,7 @@ window.addEventListener("DOMContentLoaded", (e) => {
     }
   });
 
-  const modalTimerId = setTimeout(() => openModal(modal), 5000);
+  const modalTimerId = setTimeout(() => openModal(modal), 50000);
 
   window.addEventListener("scroll", showModalByScroll);
 
@@ -223,7 +217,7 @@ window.addEventListener("DOMContentLoaded", (e) => {
   const forms = document.querySelectorAll("form");
 
   const message = {
-    loading: "Загрузка",
+    loading: "icons/spinner.svg",
     success: "Спасибо! Мы скоро с вами свяжемся",
     failure: "Что-то пошло не так...",
   };
@@ -234,40 +228,101 @@ window.addEventListener("DOMContentLoaded", (e) => {
     form.addEventListener("submit", (event) => {
       event.preventDefault();
 
-      const statusMessage = document.createElement("div");
-      statusMessage.classList.add("status");
-      statusMessage.textContent = message.loading;
-      form.append(statusMessage);
+      // Способ 1 (не всегда корректно работает при медленном интернете)
+      const statusMessage = document.createElement("img");
+      statusMessage.src = message.loading;
+      statusMessage.style.cssText = "display: block; margin: auto;";
+      form.insertAdjacentElement("afterend", statusMessage);
 
-      const request = new XMLHttpRequest();
-      request.open("POST", "server");
+      // Способ 2 (изображение уже есть в вёрстке)
+      // form.lastElementChild.style.display = 'block'
+
+      // ===== Отправка данных =====
 
       const formData = new FormData(form);
+      // Optional: FormData to json
+      const formDataJson = {};
+      formData.forEach(function (value, key) {
+        formDataJson[key] = value;
+      });
+
+      // 1. Устаревший способ - XMLHttpRequest
+
+      // const request = new XMLHttpRequest();
+      // request.open("POST", "server");
+
+      // // Отправка в формате FormData
+      // // request.send(formData);
+
+      // // Отправка в формате json
+      // request.setRequestHeader("Content-type", "application/json");
+      // request.send(JSON.stringify(formDataJson));
+
+      // request.addEventListener("load", () => {
+      //   if (request.status === 200) {
+      //     console.log(request.response);
+      //     form.reset();
+      //     showThanksModal(message.success);
+      //     // Для способа 1
+      //     statusMessage.remove();
+      //     // Для способа 2
+      //     // form.lastElementChild.style.display = 'none'
+      //   } else {
+      //     showThanksModal(message.failure);
+      //   }
+      // });
+
+      // 2. Современный способ - fetch API
 
       // Отправка в формате FormData
-      // request.send(formData);
-
+      // fetch('server', {
+      //   method: 'POST',
+      //   body: formData
+      // })
       // Отправка в формате json
-      request.setRequestHeader("Content-type", "application/json");
-      const bodyObject = {};
-      formData.forEach(function (value, key) {
-        bodyObject[key] = value;
-      });
-      request.send(JSON.stringify(bodyObject))
-
-
-      request.addEventListener("load", () => {
-        if (request.status === 200) {
-          console.log(request.response)
-          statusMessage.textContent = message.success;
-          form.reset();
-          setTimeout(() => {
-            statusMessage.remove();
-          }, 3000);
-        } else {
-          statusMessage.textContent = message.failure;
-        }
-      });
+      fetch("server", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(formDataJson),
+      })
+        // Общая часть
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          showThanksModal(message.success);
+          statusMessage.remove();
+        })
+        .catch((error) => {
+          console.error(error)
+          showThanksModal(message.failure);
+        })
+        .finally(() => form.reset());
     });
+  }
+
+  function showThanksModal(message) {
+    const modal = document.querySelector(".modal");
+    const prevModalDialog = modal.firstElementChild;
+
+    prevModalDialog.classList.add("hide");
+    openModal(modal);
+
+    const thanksModal = document.createElement("div");
+    thanksModal.classList.add("modal__dialog");
+    thanksModal.innerHTML = `
+      <div class="modal__content">
+        <div data-close class="modal__close">&times;</div>
+        <div class="modal__title">${message}</div>
+      </div>
+    `;
+    modal.append(thanksModal);
+
+    setTimeout(() => {
+      thanksModal.remove();
+      prevModalDialog.classList.remove("hide");
+      closeModal(modal);
+    }, 3000);
   }
 });
