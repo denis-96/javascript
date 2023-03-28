@@ -1,7 +1,11 @@
-from flask import Flask, send_from_directory, request, jsonify
+from flask import Flask, send_from_directory, request, jsonify, redirect, url_for
 from config import FRONTEND_FOLDER
 
 app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return redirect(url_for('main', path='index.html'))
 
 
 @app.route('/<path:path>')
