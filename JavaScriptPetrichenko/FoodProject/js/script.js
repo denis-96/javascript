@@ -179,24 +179,26 @@ window.addEventListener("DOMContentLoaded", (e) => {
     }
   }
   // Реализация через функцию
-  // function createCards(cards, parentSelector) {
-  //   const parentElement = document.querySelector(parentSelector)
-  //   cards.forEach(card => {
-  //     const cardHTML = `
-  //       <div class="menu__item">
-  //         <img src="${card.img}" alt="${card.altimg}">
-  //         <h3 class="menu__item-subtitle">${card.title}</h3>
-  //         <div class="menu__item-descr">${card.description}</div>
-  //         <div class="menu__item-divider"></div>
-  //         <div class="menu__item-price">
-  //           <div class="menu__item-cost">Цена:</div>
-  //           <div class="menu__item-total"><span>${+card.price * 18}</span> леев/день</div>
-  //         </div>
-  //       </div>
-  //     `
-  //     parentElement.insertAdjacentHTML('beforeend', cardHTML)
-  //   })
-  // }
+  /*
+  function createCards(cards, parentSelector) {
+    const parentElement = document.querySelector(parentSelector)
+    cards.forEach(card => {
+      const cardHTML = `
+        <div class="menu__item">
+          <img src="${card.img}" alt="${card.altimg}">
+          <h3 class="menu__item-subtitle">${card.title}</h3>
+          <div class="menu__item-descr">${card.description}</div>
+          <div class="menu__item-divider"></div>
+          <div class="menu__item-price">
+            <div class="menu__item-cost">Цена:</div>
+            <div class="menu__item-total"><span>${+card.price * 18}</span> леев/день</div>
+          </div>
+        </div>
+      `
+      parentElement.insertAdjacentHTML('beforeend', cardHTML)
+    })
+  }
+  */
 
   const getData = async (url) => {
     const response = await fetch(url);
@@ -353,16 +355,59 @@ window.addEventListener("DOMContentLoaded", (e) => {
   }
 
   // Slider
-  const slides = document.querySelectorAll(".offer__slide"),
+  const 
+    slidesWrapper = document.querySelector(".offer__slider-wrapper"),
+    slidesField = slidesWrapper.firstElementChild,
+    slides = slidesField.querySelectorAll(".offer__slide"),
     prev = document.querySelector(".offer__slider-prev"),
     next = document.querySelector(".offer__slider-next"),
     total = document.querySelector("#total"),
-    current = document.querySelector("#current");
-  let slideIndex = 1;
+    current = document.querySelector("#current"),
+    width = window.getComputedStyle(slidesWrapper).width;
 
-  showSlide(slideIndex);
+  let slideIndex = 1;
+  let offset = 0;
 
   total.textContent = slides.length < 10 ? `0${slides.length}` : slides.length;
+  current.textContent = slideIndex < 10 ? `0${slideIndex}` : slideIndex;
+
+  slidesField.style.cssText = `
+    width: ${100 * slides.length}%;
+    display: flex;
+    transition: 0.5s all;
+  `
+  slidesWrapper.style.overflow = 'hidden'
+  slides.forEach(slide => {
+    slide.style.width = width
+  })
+
+  next.addEventListener("click", () => {
+    if (offset == parseInt(width) * (slides.length - 1)) {
+      offset = 0
+    } else {
+      offset += parseInt(width)
+    }
+    slidesField.style.transform = `translateX(-${offset}px)`
+
+    slideIndex = slideIndex === slides.length ? 1 : slideIndex + 1
+    current.textContent = slideIndex < 10 ? `0${slideIndex}` : slideIndex;
+  });
+  prev.addEventListener("click", () => {
+    if (!offset) {
+      offset = parseInt(width) * (slides.length - 1)
+    } else {
+      offset -= parseInt(width)
+    }
+    slidesField.style.transform = `translateX(-${offset}px)`
+    
+    slideIndex = slideIndex === 1 ? slides.length : slideIndex - 1
+    current.textContent = slideIndex < 10 ? `0${slideIndex}` : slideIndex;
+  });
+
+
+  // Вариант 2
+  /*
+  showSlide(slideIndex);
 
   function showSlide(index) {
     if (index > slides.length) {
@@ -385,4 +430,5 @@ window.addEventListener("DOMContentLoaded", (e) => {
   }
   prev.addEventListener("click", () => changeSlide(-1));
   next.addEventListener("click", () => changeSlide(1));
+  */
 });
