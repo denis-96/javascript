@@ -221,11 +221,8 @@ window.addEventListener("DOMContentLoaded", (e) => {
       });
       // Функция
       // createCards(menuCards, ".menu__field .container")
-
     })
     .catch((error) => console.error(error));
-
-    
 
   // Forms
   const forms = document.querySelectorAll("form");
@@ -354,4 +351,38 @@ window.addEventListener("DOMContentLoaded", (e) => {
       closeModal(modal);
     }, 3000);
   }
+
+  // Slider
+  const slides = document.querySelectorAll(".offer__slide"),
+    prev = document.querySelector(".offer__slider-prev"),
+    next = document.querySelector(".offer__slider-next"),
+    total = document.querySelector("#total"),
+    current = document.querySelector("#current");
+  let slideIndex = 1;
+
+  showSlide(slideIndex);
+
+  total.textContent = slides.length < 10 ? `0${slides.length}` : slides.length;
+
+  function showSlide(index) {
+    if (index > slides.length) {
+      slideIndex = 1;
+    } else if (index < 1) {
+      slideIndex = slides.length;
+    }
+    slides.forEach((slide) => {
+      slide.classList.remove("show", "fade");
+      slide.classList.add("hide");
+    });
+
+    slides[slideIndex - 1].classList.remove("hide");
+    slides[slideIndex - 1].classList.add("show", "fade");
+
+    current.textContent = slideIndex < 10 ? `0${slideIndex}` : slideIndex;
+  }
+  function changeSlide(n) {
+    showSlide((slideIndex += n));
+  }
+  prev.addEventListener("click", () => changeSlide(-1));
+  next.addEventListener("click", () => changeSlide(1));
 });
