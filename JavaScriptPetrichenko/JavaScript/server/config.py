@@ -1,1 +1,1 @@
-FRONTEND_FOLDER = '/home/denis/Desktop/JavaScript/JavaScriptPetrichenko/FoodProject'
+FRONTEND_FOLDER = '/home/denis/Desktop/JavaScript/JavaScriptPetrichenko/JavaScript/FoodProject'
