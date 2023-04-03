@@ -1,0 +1,29 @@
+HTML - HyperText Markup Language
+
+CSS - Cascading Style Sheets
+
+JavaScript - Язык программирования
+
+
+HTML - каркас, основа, структура
+CSS - внешний вид, стилизация
+JavaScript - двигатель веб сайта (динамика)
+
+Как клиенты взаимодействуют с серверами
+
+Когда вы открываете любой веб сайт,
+клиент (веб браузер) скачивает небхоимые файлы с сервера
+
+HTTP - HyperText Transfer Protocol
+По этому протоколу клиенты устанавливают связь серверами
+и сервера передают файлы клиенту
+
+Протокол HTTP передаёт данные в окрытом виде (не зашифровывая)
+Протокол TLS - Transport Layer Security
+
+HTTP + TLS = HTTPS (S - secure - безопасный)
+
+HTML теги:
+html, head, body,
+div, a, img, h1, p,
+meta, link, style, script
