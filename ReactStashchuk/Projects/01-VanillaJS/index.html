@@ -5,8 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vanilla JS</title>
+    <style>
+      .app {
+        text-align: center;
+      }
+      .green-btn {
+        color: white;
+        background-color: green;
+      }
+    </style>
   </head>
+
   <body>
-    <button>Click me</button>
+    <div class="app">
+      <button id="my-button" onclick="changeButton('#my-button')">
+        Click me
+      </button>
+    </div>
   </body>
+
+  <script>
+    function changeButton(selector) {
+      const button = document.querySelector(selector);
+      button.innerHTML = "Hello from Vanilla JS";
+      button.classList.toggle("green-btn");
+    }
+  </script>
 </html>
