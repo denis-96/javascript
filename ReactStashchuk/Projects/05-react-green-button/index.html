@@ -4,7 +4,27 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>React Hello World</title>
+    <title>React JSX Green Button</title>
+    <style>
+      .app {
+        text-align: center;
+      }
+      .btn {
+        height: 80px;
+        width: 200px;
+        border-radius: 7px;
+        border-width: 1px;
+        background-color: #34568B;
+        color: #fff;
+        font-size: 20px;
+      }
+      .btn:hover {
+        opacity: 0.7;
+      }
+      .green-btn {
+        background-color: green;
+      }
+    </style>
   </head>
   <body>
     <div id="app"></div>
@@ -17,13 +37,6 @@
       crossorigin
     ></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <script type="text/babel">
-      const helloWorldHeading = <h1>Hello from React</h1>;
-      console.log(helloWorldHeading);
-
-      const container = document.querySelector("#app");
-      const root = ReactDOM.createRoot(container);
-      root.render(helloWorldHeading);
-    </script>
+    <script src="script.js" type="text/babel"></script>
   </body>
 </html>
