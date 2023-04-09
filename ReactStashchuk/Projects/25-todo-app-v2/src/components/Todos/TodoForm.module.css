@@ -1,0 +1,19 @@
+.container {
+    margin-bottom: 30px;
+}
+
+.container form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.container input {
+    width: 45%;
+    height: 30px;
+    font-size: 1.3rem;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+}
