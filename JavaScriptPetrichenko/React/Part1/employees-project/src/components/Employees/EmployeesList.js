@@ -1,11 +1,16 @@
-import "./EmployeesList.css";
 import Employee from "./Employee";
 
-function EmployeesList({ employees }) {
+import "./EmployeesList.css";
+
+function EmployeesList({ employees, deleteEmployeeHandler }) {
   return (
     <ul className="employees-list list-group">
       {employees.map((employee) => (
-        <Employee key={employee.id} {...employee} />
+        <Employee
+          key={employee.id}
+          deleteHandler={() => deleteEmployeeHandler(employee.id)}
+          {...employee}
+        />
       ))}
     </ul>
   );

@@ -1,6 +1,7 @@
-import "./EmployeesFilterBar.css";
 import Search from "./Search";
 import Filter from "./Filters";
+
+import "./EmployeesFilterBar.css";
 
 function FilterBar() {
   return (
