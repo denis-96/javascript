@@ -42,6 +42,7 @@ class EmployeeAddForm extends Component {
             placeholder="Как его зовут?"
             name="name"
             value={name}
+            required
             onChange={this.inputChangeHandler}
           />
           <input
@@ -50,6 +51,7 @@ class EmployeeAddForm extends Component {
             placeholder="З/П в $?"
             name="salary"
             value={salary}
+            required
             onChange={this.inputChangeHandler}
           />
 
