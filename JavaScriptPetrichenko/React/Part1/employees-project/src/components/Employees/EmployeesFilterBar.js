@@ -3,11 +3,11 @@ import Filter from "./Filters";
 
 import "./EmployeesFilterBar.css";
 
-function FilterBar() {
+function FilterBar({ changeSearch, changeFilter }) {
   return (
     <div className="filter-bar">
-      <Search />
-      <Filter />
+      <Search changeSearch={changeSearch} />
+      <Filter changeFilter={changeFilter} />
     </div>
   );
 }

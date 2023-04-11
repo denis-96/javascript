@@ -53,7 +53,7 @@ class WhoAmI extends React.Component {
     const { position, years } = this.state;
     console.log(this);
     return (
-      <div>
+      <>
         <button onClick={() => this.nextYear()}>{this.state.text}</button>
         <h1>
           My name is {name}, surname - {surname}, age - {years}, position -{" "}
@@ -68,7 +68,7 @@ class WhoAmI extends React.Component {
             onChange={(e) => this.commitInputChanges(e, "some color")}
           />
         </form>
-      </div>
+      </>
     );
   }
 }

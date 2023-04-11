@@ -33,8 +33,16 @@ class App extends Component {
           rised: false,
         },
       ],
+      searchQuery: "",
+      filter: "",
     };
   }
+
+  filters = {
+    all: () => true,
+    forRise: (employee) => employee.rised,
+    salaryOverThousand: (employee) => employee.salary > 1000,
+  };
 
   deleteEmployeeHandler = (id) => {
     this.setState(({ employees }) => ({
@@ -65,12 +73,37 @@ class App extends Component {
     }));
   };
 
+  changeSearch = (searchQuery) => {
+    this.setState({ searchQuery });
+  };
+
+  changeFilter = (filter) => {
+    this.setState({ filter });
+  };
+
+  filterEmployees = (employees, searchQuery, filter) => {
+    if (!searchQuery.length && !filter) {
+      return employees;
+    }
+    return employees.filter(
+      (employee) =>
+        employee.name.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1 &&
+        this.filters?.[filter](employee)
+    );
+  };
+
   render() {
-    const { employees } = this.state;
+    const { employees, searchQuery, filter } = this.state;
     const totalEmployees = employees.length;
     const increasedEmployees = employees.reduce(
       (prev, next) => prev + next.increased,
       0
+    );
+
+    const visibleEmployees = this.filterEmployees(
+      employees,
+      searchQuery,
+      filter
     );
     return (
       <div className="app">
@@ -78,9 +111,12 @@ class App extends Component {
           totalEmployees={totalEmployees}
           increasedEmployees={increasedEmployees}
         />
-        <FilterBar />
+        <FilterBar
+          changeSearch={this.changeSearch}
+          changeFilter={this.changeFilter}
+        />
         <EmployeesList
-          employees={employees}
+          employees={visibleEmployees}
           deleteEmployeeHandler={this.deleteEmployeeHandler}
           togglePropHandler={this.togglePropHandler}
         />
