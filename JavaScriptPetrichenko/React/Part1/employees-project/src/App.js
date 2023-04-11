@@ -34,14 +34,20 @@ class App extends Component {
         },
       ],
       searchQuery: "",
-      filter: "",
+      filter: "all",
     };
   }
 
   filters = {
-    all: () => true,
-    forRise: (employee) => employee.rised,
-    salaryOverThousand: (employee) => employee.salary > 1000,
+    all: { label: "Все сотрудники", filterFunc: () => true },
+    forRise: {
+      label: "На повышение",
+      filterFunc: (employee) => employee.rised,
+    },
+    salaryOverThousand: {
+      label: "З/П больше 1000$",
+      filterFunc: (employee) => employee.salary > 1000,
+    },
   };
 
   deleteEmployeeHandler = (id) => {
@@ -73,6 +79,14 @@ class App extends Component {
     }));
   };
 
+  changePropHandler = (id, prop, newValue) => {
+    this.setState(({ employees }) => ({
+      employees: employees.map((employee) =>
+        employee.id === id ? { ...employee, [prop]: newValue } : { ...employee }
+      ),
+    }));
+  };
+
   changeSearch = (searchQuery) => {
     this.setState({ searchQuery });
   };
@@ -88,7 +102,7 @@ class App extends Component {
     return employees.filter(
       (employee) =>
         employee.name.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1 &&
-        this.filters?.[filter](employee)
+        this.filters?.[filter].filterFunc(employee)
     );
   };
 
@@ -105,6 +119,7 @@ class App extends Component {
       searchQuery,
       filter
     );
+
     return (
       <div className="app">
         <Info
@@ -114,11 +129,17 @@ class App extends Component {
         <FilterBar
           changeSearch={this.changeSearch}
           changeFilter={this.changeFilter}
+          currentFilter={filter}
+          filters={Object.keys(this.filters).map((filterName) => ({
+            filterName,
+            label: this.filters[filterName].label,
+          }))}
         />
         <EmployeesList
           employees={visibleEmployees}
           deleteEmployeeHandler={this.deleteEmployeeHandler}
           togglePropHandler={this.togglePropHandler}
+          changePropHandler={this.changePropHandler}
         />
         <EmployeeAddForm addEmployee={this.addEmployeeHandler} />
       </div>

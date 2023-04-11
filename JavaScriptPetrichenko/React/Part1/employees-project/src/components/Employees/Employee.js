@@ -9,6 +9,7 @@ function Employee(props) {
     deleteHandler,
     toggleIncreaseHandler,
     toggleRiseHandler,
+    changeSalary,
   } = props;
 
   let classNames = "list-group-item d-flex justify-content-between";
@@ -23,7 +24,8 @@ function Employee(props) {
       <input
         type="text"
         className="list-group-item-input"
-        defaultValue={salary + "$"}
+        value={salary + "$"}
+        onChange={(e) => changeSalary(parseInt(e.target.value))}
       />
       <div className="d-flex justify-content-center align-items-center">
         <button

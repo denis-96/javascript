@@ -6,6 +6,7 @@ function EmployeesList({
   employees,
   deleteEmployeeHandler,
   togglePropHandler,
+  changePropHandler,
 }) {
   return (
     <ul className="employees-list list-group">
@@ -18,6 +19,9 @@ function EmployeesList({
           }
           toggleRiseHandler={() => togglePropHandler(employee.id, "rised")}
           {...employee}
+          changeSalary={(newSalary) =>
+            changePropHandler(employee.id, "salary", newSalary)
+          }
         />
       ))}
     </ul>
