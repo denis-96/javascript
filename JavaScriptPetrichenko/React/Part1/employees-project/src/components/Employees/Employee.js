@@ -18,7 +18,14 @@ function Employee(props) {
 
   return (
     <li className={classNames}>
-      <span className="list-group-item-label" onClick={toggleRiseHandler}>
+      <span
+        className="list-group-item-label"
+        onClick={toggleRiseHandler}
+        style={{
+          transition: "all",
+          msTransition: "all",
+        }}
+      >
         {name}
       </span>
       <input
