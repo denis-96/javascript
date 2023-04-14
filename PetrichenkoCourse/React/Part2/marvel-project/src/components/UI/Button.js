@@ -1,6 +1,6 @@
 import "./Buttons.scss";
 
-function Button({ text, type, isLong }) {
+function Button({ text, type, isLong, ...props }) {
   const buttonClass = `button ${
     type === "main"
       ? "button__main"
@@ -9,7 +9,7 @@ function Button({ text, type, isLong }) {
       : ""
   } ${isLong ? "button__long" : ""}`;
   return (
-    <button className={buttonClass}>
+    <button {...props} className={buttonClass}>
       <div className="button__inner">{text}</div>
     </button>
   );

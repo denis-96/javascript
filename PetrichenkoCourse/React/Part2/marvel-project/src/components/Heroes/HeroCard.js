@@ -1,15 +1,33 @@
+import { Component } from "react";
+
 import "./HeroCard.scss";
 
-import abyss from "../../resources/img/abyss.jpg";
+class HeroCard extends Component {
+  state = {
+    selected: false,
+  };
 
-function HeroCard({ selected }) {
-  const heroClass = `hero__card ${selected ? "hero__card_selected" : ""}`;
-  return (
-    <li className={heroClass}>
-      <img src={abyss} alt="abyss" />
-      <div className="hero__card__name">Abyss</div>
-    </li>
-  );
+  onClick = () => {
+    this.setState(({ selected }) => ({ selected: !selected }));
+    this.props.onClick();
+  };
+
+  render() {
+    const { name, thumbnail } = this.props;
+
+    const heroClass = `hero__card ${
+      this.state.selected ? "hero__card_selected" : ""
+    }`;
+    const thumbnailStyle = thumbnail.includes("image_not_available")
+      ? { objectFit: "unset" }
+      : { objectFit: "cover" };
+    return (
+      <li className={heroClass} onClick={this.onClick}>
+        <img style={thumbnailStyle} src={thumbnail} alt="abyss" />
+        <div className="hero__card__name">{name}</div>
+      </li>
+    );
+  }
 }
 
 export default HeroCard;
