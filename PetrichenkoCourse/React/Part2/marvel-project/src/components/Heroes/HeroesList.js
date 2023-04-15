@@ -1,4 +1,5 @@
 import { Component } from "react";
+import PropTypes from "prop-types";
 
 import "./HeroesList.scss";
 
@@ -10,7 +11,13 @@ import Spinner from "../UI/Spinner";
 import ErrorMessage from "../UI/ErrorMessage";
 
 class HeroesList extends Component {
-  state = { heroes: [], loading: true, error: false, offset: 0 };
+  state = {
+    heroes: [],
+    loading: true,
+    error: false,
+    offset: 210,
+    allHeroesLoaded: false,
+  };
 
   marvelService = new MarvelService();
 
@@ -23,6 +30,7 @@ class HeroesList extends Component {
       heroes: [...heroes, ...loadedHeroes],
       loading: false,
       offset: offset + loadedHeroes.length,
+      allHeroesLoaded: loadedHeroes.length < 9,
     }));
   };
 
@@ -37,24 +45,30 @@ class HeroesList extends Component {
   updateHeroesList = () => {
     this.onHeroesLoading();
     this.marvelService
-      .getHeroes(this.state.offset, 9)
+      .getHeroes(9, this.state.offset)
       .then(this.onHeroesLoaded)
       .catch(this.onError);
   };
 
   render() {
-    const { heroes, loading, error } = this.state;
-    const { onHeroSelect } = this.props;
+    const { heroes, loading, error, allHeroesLoaded } = this.state;
+    const { onHeroSelect, selectedHero } = this.props;
     return (
       <div className="heroes__list">
         {error ? (
           <ErrorMessage />
         ) : (
-          <HeroesGrid heroes={heroes} onHeroSelect={onHeroSelect} />
+          <HeroesGrid
+            heroes={heroes}
+            onHeroSelect={onHeroSelect}
+            selectedHero={selectedHero}
+          />
         )}
         {loading && <Spinner />}
         <Button
+          style={{ display: allHeroesLoaded ? "none" : "block" }}
           onClick={this.updateHeroesList}
+          disabled={loading}
           text="load more"
           type="main"
           isLong
@@ -64,7 +78,7 @@ class HeroesList extends Component {
   }
 }
 
-function HeroesGrid({ heroes, onHeroSelect }) {
+function HeroesGrid({ heroes, onHeroSelect, selectedHero }) {
   return (
     <ul className="heroes__grid">
       {heroes.map((hero) => (
@@ -72,10 +86,16 @@ function HeroesGrid({ heroes, onHeroSelect }) {
           key={hero.id}
           onClick={() => onHeroSelect(hero.id)}
           {...hero}
+          selected={selectedHero === hero.id}
         />
       ))}
     </ul>
   );
 }
+
+HeroesList.propTypes = {
+  onHeroSelect: PropTypes.func,
+  selectedHero: PropTypes.number,
+};
 
 export default HeroesList;

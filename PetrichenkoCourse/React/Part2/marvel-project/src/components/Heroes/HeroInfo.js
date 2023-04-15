@@ -1,4 +1,5 @@
 import { Component } from "react";
+import PropTypes from "prop-types";
 
 import "./HeroInfo.scss";
 
@@ -114,5 +115,9 @@ function HeroInfoSkeleton() {
     </>
   );
 }
+
+HeroInfo.propTypes = {
+  heroId: PropTypes.number,
+};
 
 export default HeroInfo;

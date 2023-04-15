@@ -5,6 +5,7 @@ import "./Heroes.scss";
 import RandomHero from "./RandomHero";
 import HeroesList from "./HeroesList";
 import HeroInfo from "./HeroInfo";
+import ErrorBoundary from "../ErrorBoundaries/ErrorBoundary";
 
 class Heroes extends Component {
   state = {
@@ -18,10 +19,19 @@ class Heroes extends Component {
   render() {
     return (
       <>
-        <RandomHero />
+        <ErrorBoundary>
+          <RandomHero />
+        </ErrorBoundary>
         <div className="heroes__container">
-          <HeroesList onHeroSelect={this.onHeroSelect} />
-          <HeroInfo heroId={this.state.selectedHero} />
+          <ErrorBoundary>
+            <HeroesList
+              onHeroSelect={this.onHeroSelect}
+              selectedHero={this.state.selectedHero}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <HeroInfo heroId={this.state.selectedHero} />
+          </ErrorBoundary>
         </div>
       </>
     );

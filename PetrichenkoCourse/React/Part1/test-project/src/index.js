@@ -4,8 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 import App from "./App";
 
-import BootstrapTest from "./BootstrapTest";
-
 // const elem = <h2>Hello World!</h2>
 // const elem = React.createElement("h1", {className: 'greetings'}, "Hello World!");
 
@@ -23,6 +21,5 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <StrictMode>
     <App />
-    <BootstrapTest />
   </StrictMode>
 );

@@ -4,7 +4,7 @@ function Header() {
   return (
     <header className="header">
       <h1 className="header__title">
-        <a href="">
+        <a href="/">
           <span>Marvel </span>
           information portal
         </a>
@@ -12,11 +12,11 @@ function Header() {
       <nav className="header__menu">
         <ul>
           <li>
-            <a href="">Characters</a>
+            <a href="/">Characters</a>
           </li>
           /
           <li>
-            <a href="">Comics</a>
+            <a href="/">Comics</a>
           </li>
         </ul>
       </nav>

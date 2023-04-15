@@ -3,6 +3,8 @@ import styled from "styled-components";
 
 import "./App.css";
 
+import BootstrapTest from "./BootstrapTest";
+
 // const Header = () => {
 //   return <h2>Hello world!</h2>;
 // };
@@ -114,9 +116,71 @@ const Wrapper = styled.div`
   margin: 80px auto 0 auto;
 `;
 
+function DynamicGreeting(props) {
+  return (
+    <div className={`mb-3 p-3 border border-${props.color}`}>
+      {React.Children.map(props.children, (child) =>
+        React.cloneElement(child, {
+          className: "shadow p-3 m-3 border rounded",
+        })
+      )}
+    </div>
+  );
+}
+
+function HelloGreeting() {
+  return (
+    <div style={{ width: 600, margin: "0 auto" }}>
+      <DynamicGreeting color="primary">
+        <h2>Hello world</h2>
+      </DynamicGreeting>
+    </div>
+  );
+}
+
+function Message(props) {
+  return <h2>The counter is {props.counter}</h2>;
+}
+
+class Counter extends React.Component {
+  state = {
+    counter: 0,
+  };
+
+  changeCounter = () => {
+    this.setState(({ counter }) => ({ counter: counter + 1 }));
+  };
+
+  render() {
+    return (
+      <>
+        <button className="btn btn-primary" onClick={this.changeCounter}>
+          Click me
+        </button>
+        {this.props.render(this.state.counter)}
+      </>
+    );
+  }
+}
+
 function App() {
   return (
     <Wrapper>
+      <Counter render={(counter) => <Message counter={counter} />} />
+      <HelloGreeting />
+      <BootstrapTest
+        left={
+          <DynamicGreeting color="primary">
+            <h2>Some text</h2>
+            <h2>Hello world</h2>
+          </DynamicGreeting>
+        }
+        right={
+          <DynamicGreeting color="primary">
+            <h2>Right</h2>
+          </DynamicGreeting>
+        }
+      />
       <WhoAmI name="Denis" surname="Bargan" link="link.com" />
       <WhoAmI name="Alex" surname="Smith" link="link.com" />
       <BigButton as="div">Button</BigButton>
