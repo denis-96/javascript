@@ -1,36 +1,36 @@
+/*
 import React from "react";
-import styled from "styled-components";
-
 import "./App.css";
 
+import styled from "styled-components";
 import BootstrapTest from "./BootstrapTest";
 
-// const Header = () => {
-//   return <h2>Hello world!</h2>;
-// };
+const Header = () => {
+  return <h2>Hello world!</h2>;
+};
 
-// const Field = () => {
-//   const styles = {
-//     width: "300px",
-//   };
-//   return <input style={styles} placeholder="Type here" type="text" />;
-// };
+const Field = () => {
+  const styles = {
+    width: "300px",
+  };
+  return <input style={styles} placeholder="Type here" type="text" />;
+};
 
-// function Btn() {
-//   const text = "Log in";
-//   const logged = false;
+function Btn() {
+  const text = "Log in";
+  const logged = false;
 
-//   return <button>{logged ? "Enter" : text}</button>;
-// }
+  return <button>{logged ? "Enter" : text}</button>;
+}
 
-// class Field extends React.Component {
-//   render() {
-//     const styles = {
-//       width: "300px",
-//     };
-//     return <input style={styles} placeholder="Type here" type="text" />;
-//   }
-// }
+class Field extends React.Component {
+  render() {
+    const styles = {
+      width: "300px",
+    };
+    return <input style={styles} placeholder="Type here" type="text" />;
+  }
+}
 
 const EmpItem = styled.div`
   padding: 20px;
@@ -186,6 +186,83 @@ function App() {
       <BigButton as="div">Button</BigButton>
     </Wrapper>
   );
+}
+*/
+
+import { Component, createRef } from "react";
+import { Container } from "react-bootstrap";
+import "./App.css";
+
+class Form extends Component {
+  emailInputRef = createRef();
+  textareaRef = createRef();
+  elementRef = createRef();
+
+  componentDidMount() {
+    // this.emailInputRef.current.doSomething(); // ref ссылается на React компонент
+    // this.textareaRef.current.focus(); // ref ссылается на DOM элемент
+    console.log(this.emailInputRef);
+    console.log(this.textareaRef);
+    console.log(this.elementRef);
+  }
+
+  setDivRef = (element) => {
+    this.elementRef = element;
+  };
+
+  focusTextArea = () => {
+    this.textareaRef.current.focus();
+  };
+
+  render() {
+    return (
+      <Container>
+        <form className="w-50 border mt-5 p-3 m-auto">
+          <div className="mb-3" ref={this.setDivRef}>
+            <label htmlFor="exampleFormControlInput1" className="form-label">
+              Email address
+            </label>
+            <TextInput ref={this.emailInputRef} onClick={this.focusTextArea} />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="exampleFormControlTextarea1" className="form-label">
+              Example textarea
+            </label>
+            <textarea
+              ref={this.textareaRef}
+              className="form-control"
+              id="exampleFormControlTextarea1"
+              rows="3"
+            ></textarea>
+          </div>
+        </form>
+      </Container>
+    );
+  }
+}
+
+class TextInput extends Component {
+  doSomething = () => {
+    console.log("something");
+  };
+
+  render() {
+    return (
+      <input
+        type="email"
+        className="form-control"
+        id="exampleFormControlInput1"
+        placeholder="name@example.com"
+        {...this.props}
+      />
+    );
+  }
+}
+
+class App extends Component {
+  render() {
+    return <Form />;
+  }
 }
 
 export default App;
