@@ -1,0 +1,26 @@
+Client-side routing - роутинг на стороне клиента
+
+React Router - внешняя библиотека для реализации роутинга 
+в React приложениях
+
+Функции React Router:
+Роутинг,
+Вложенные маршруты,
+Параметры маршрутовб
+Строки запросов,
+Загрузчики данных,
+Обработчики событий,
+Перенаправление,
+Страницы Not Found (404)
+
+
+Uniform Resource Locator (URL)
+
+Пртокол       Домен    TLD*      Путь      Строка запроса
+https  :// stashchuk . com  / all-courses ? q=react&sort=date
+             Корневой домен
+
+TLD - Top Level Domain (Домен верхнего уровня)
+
+Методы HTTP
+GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD
