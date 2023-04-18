@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import "./HeroInfo.scss";
@@ -10,63 +10,51 @@ import Skeleton from "../UI/Skeleton";
 import Spinner from "../UI/Spinner";
 import ErrorMessage from "../UI/ErrorMessage";
 
-class HeroInfo extends Component {
-  state = {
-    hero: null,
-    loading: false,
-    error: false,
+function HeroInfo({ heroId }) {
+  const [hero, setHero] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const marvelService = new MarvelService();
+
+  const onLoaded = (hero) => {
+    setHero(hero);
+    setLoading(false);
   };
 
-  marvelService = new MarvelService();
-
-  componentDidMount() {
-    this.updateHeroInfo();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.heroId !== prevProps.heroId) {
-      this.updateHeroInfo();
-    }
-  }
-
-  onLoaded = (hero) => {
-    this.setState({ hero, loading: false });
+  const onLoading = () => {
+    setLoading(true);
   };
 
-  onLoading = () => {
-    this.setState({ loading: true });
+  const onError = () => {
+    setLoading(false);
+    setError(true);
   };
 
-  onError = () => {
-    this.setState({ loading: false, error: true });
-  };
-
-  updateHeroInfo = () => {
-    const { heroId } = this.props;
+  const updateHeroInfo = () => {
     if (!heroId) return;
-
-    this.onLoading();
-
-    this.marvelService.getHero(heroId).then(this.onLoaded).catch(this.onError);
+    onLoading();
+    marvelService.getHero(heroId).then(onLoaded).catch(onError);
   };
 
-  render() {
-    const { hero, loading, error } = this.state;
+  useEffect(() => {
+    updateHeroInfo();
+    console.log("effect");
+  }, [heroId]);
 
-    return (
-      <div className="hero__info">
-        {loading ? (
-          <Spinner />
-        ) : error ? (
-          <ErrorMessage />
-        ) : hero ? (
-          <View hero={hero} />
-        ) : (
-          <HeroInfoSkeleton />
-        )}
-      </div>
-    );
-  }
+  return (
+    <div className="hero__info">
+      {loading ? (
+        <Spinner />
+      ) : error ? (
+        <ErrorMessage />
+      ) : hero ? (
+        <View hero={hero} />
+      ) : (
+        <HeroInfoSkeleton />
+      )}
+    </div>
+  );
 }
 
 function View({ hero }) {
