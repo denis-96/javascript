@@ -1,17 +1,16 @@
 import "./ComicCard.scss";
 
-import UW from "../../resources/img/UW.png";
-import xMen from "../../resources/img/x-men.png";
-
-function ComicCard({ title, price, imageName }) {
-  const images = { UW, xMen };
-
+function ComicCard({ title, price, thumbnail }) {
+  const thumbnailStyle = thumbnail.includes("image_not_available")
+    ? { objectFit: "unset" }
+    : { objectFit: "cover" };
   return (
     <li className="comic__card">
       <a href="#">
         <img
-          src={images?.[imageName]}
-          alt="ultimate war"
+          style={thumbnailStyle}
+          src={thumbnail}
+          alt="comic image"
           className="comic__card-img"
         />
         <div className="comic__card-name">{title}</div>

@@ -22,7 +22,7 @@ function HeroCard(props) {
       tabIndex={0}
       ref={cardRef}
     >
-      <img style={thumbnailStyle} src={thumbnail} alt="abyss" />
+      <img style={thumbnailStyle} src={thumbnail} alt="hero image" />
       <div className="hero__card__name">{name}</div>
     </li>
   );

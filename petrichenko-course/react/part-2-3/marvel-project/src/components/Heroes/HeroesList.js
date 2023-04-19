@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import "./HeroesList.scss";
 
-import MarvelService from "../../services/MarvelService";
+import useMarvelService from "../../services/MarvelService";
 
 import HeroCard from "./HeroCard";
 import Button from "../UI/Button";
@@ -12,16 +12,13 @@ import ErrorMessage from "../UI/ErrorMessage";
 
 function HeroesList(props) {
   const [heroes, setHeroes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
   const [offset, setOffset] = useState(210);
   const [allHeroesLoaded, setAllHeroesLoaded] = useState(false);
 
-  const marvelService = new MarvelService();
+  const { loading, error, getHeroes } = useMarvelService();
 
   const updateHeroesList = () => {
-    onHeroesLoading();
-    marvelService.getHeroes(9, offset).then(onHeroesLoaded).catch(onError);
+    getHeroes(offset).then(onHeroesLoaded);
   };
 
   useEffect(() => {
@@ -32,16 +29,6 @@ function HeroesList(props) {
     setHeroes((heroes) => [...heroes, ...loadedHeroes]);
     setOffset((offset) => offset + loadedHeroes.length);
     setAllHeroesLoaded(loadedHeroes.length < 9);
-    setLoading(false);
-  };
-
-  const onHeroesLoading = () => {
-    setLoading(true);
-  };
-
-  const onError = () => {
-    setLoading(false);
-    setError(true);
   };
 
   const { onHeroSelect } = props;

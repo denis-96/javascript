@@ -8,8 +8,8 @@ function Comics() {
   return (
     <>
       <ComicBanner />
-      {/* <ComicsList /> */}
-      <Comic />
+      <ComicsList />
+      {/* <Comic /> */}
     </>
   );
 }

@@ -11,9 +11,9 @@ function App() {
     <div className="app">
       <Header />
       <main>
-        <Heroes />
+        {/* <Heroes /> */}
+        <Comics />
         <img className="bg-decoration" src={decoration} alt="vision" />
-        {/* <Comics /> */}
       </main>
     </div>
   );

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import "./HeroInfo.scss";
 
-import MarvelService from "../../services/MarvelService";
+import useMarvelService from "../../services/MarvelService";
 
 import Button from "../UI/Button";
 import Skeleton from "../UI/Skeleton";
@@ -12,34 +12,19 @@ import ErrorMessage from "../UI/ErrorMessage";
 
 function HeroInfo({ heroId }) {
   const [hero, setHero] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
 
-  const marvelService = new MarvelService();
-
-  const onLoaded = (hero) => {
-    setHero(hero);
-    setLoading(false);
-  };
-
-  const onLoading = () => {
-    setLoading(true);
-  };
-
-  const onError = () => {
-    setLoading(false);
-    setError(true);
-  };
+  const { loading, error, getHero, clearError } = useMarvelService();
 
   const updateHeroInfo = () => {
     if (!heroId) return;
-    onLoading();
-    marvelService.getHero(heroId).then(onLoaded).catch(onError);
+    clearError();
+    getHero(heroId).then((hero) => {
+      setHero(hero);
+    });
   };
 
   useEffect(() => {
     updateHeroInfo();
-    console.log("effect");
   }, [heroId]);
 
   return (

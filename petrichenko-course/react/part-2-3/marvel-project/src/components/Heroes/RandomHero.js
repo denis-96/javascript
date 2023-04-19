@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import "./RandomHero.scss";
 
 import mjolnir from "../../resources/img/mjolnir.png";
 
-import MarvelService from "../../services/MarvelService";
+import useMarvelService from "../../services/MarvelService";
 
 import Button from "../UI/Button";
 import Spinner from "../UI/Spinner";
@@ -12,36 +12,24 @@ import ErrorMessage from "../UI/ErrorMessage";
 
 function RandomHero() {
   const [hero, setHero] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
-  const marvelService = new MarvelService();
+  const { loading, error, getHero, clearError } = useMarvelService();
 
   const onHeroLoaded = (hero) => {
     setHero(hero);
-    setLoading(false);
   };
 
-  const onHeroLoading = () => {
-    setLoading(true);
-  };
-
-  const onError = () => {
-    setLoading(false);
-    setError(true);
-  };
-
-  const updateHero = () => {
-    onHeroLoading();
+  const updateHero = useCallback(() => {
+    clearError();
     const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-    marvelService.getHero(id).then(onHeroLoaded).catch(onError);
-  };
+    getHero(id).then(onHeroLoaded);
+  }, [getHero, clearError]);
 
   useEffect(() => {
     updateHero();
     // const intervalId = setInterval(updateHero, 5000);
     // return () => clearInterval(intervalId);
-  }, []);
+  }, [updateHero]);
 
   return (
     <div className="random-hero">
@@ -49,9 +37,9 @@ function RandomHero() {
         <ErrorMessage />
       ) : loading ? (
         <Spinner />
-      ) : (
+      ) : hero ? (
         <RandomHeroBlock hero={hero} />
-      )}
+      ) : null}
       <div className="random-hero__static">
         <p className="random-hero__title">
           Random character for today!
