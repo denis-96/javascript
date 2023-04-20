@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import "./Heroes.scss";
 
-import RandomHero from "./RandomHero";
 import HeroesList from "./HeroesList";
 import HeroInfo from "./HeroInfo";
 import ErrorBoundary from "../ErrorBoundaries/ErrorBoundary";
@@ -15,19 +14,14 @@ function Heroes() {
   };
 
   return (
-    <>
+    <div className="heroes__container">
       <ErrorBoundary>
-        <RandomHero />
+        <HeroesList onHeroSelect={onHeroSelect} />
       </ErrorBoundary>
-      <div className="heroes__container">
-        <ErrorBoundary>
-          <HeroesList onHeroSelect={onHeroSelect} />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <HeroInfo heroId={selectedHero} />
-        </ErrorBoundary>
-      </div>
-    </>
+      <ErrorBoundary>
+        <HeroInfo heroId={selectedHero} />
+      </ErrorBoundary>
+    </div>
   );
 }
 

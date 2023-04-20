@@ -51,6 +51,7 @@ function ComicsGrid({ comics }) {
       {comics.map((comic) => (
         <ComicCard
           key={comic.id}
+          id={comic.id}
           title={comic.title}
           price={comic.price}
           thumbnail={comic.thumbnail}
