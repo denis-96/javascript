@@ -27,6 +27,20 @@ function Form() {
 
   const color = input.validateInput() ? "text-danger" : "";
 
+  const someFunc = async () => {
+    // const { logger, secondLogger } = await import("./someFunc");
+
+    const logger = (await import("./someFunc")).default;
+    logger();
+  };
+
+  if (color) {
+    // import("./someFunc")
+    //   .then((moduleObj) => moduleObj.logger())
+    //   .catch();
+    someFunc();
+  }
+
   return (
     <Container>
       <form className="w-50 border mt-5 p-3 m-auto">
