@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
 
 import useMarvelService from "../services/MarvelService";
 import ComicBanner from "../components/Comics/ComicBanner";
@@ -22,6 +23,10 @@ function ComicPage() {
 
   return (
     <>
+      <Helmet>
+        <meta name="description" content="Marvel information portal" />
+        <title>{comic ? comic.title : "Marvel information portal"}</title>
+      </Helmet>
       <ComicBanner />
       {loading ? (
         <Spinner />
