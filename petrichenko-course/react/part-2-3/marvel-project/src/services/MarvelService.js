@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import useHttp from "../hooks/http.hook";
+import useHttp from "../hooks/useHttp";
 
 const _transformHeroesData = (data) => {
   const heroes = data.data.results;
@@ -33,7 +33,7 @@ const _transformComicsData = (data) => {
 };
 
 function useMarvelService() {
-  const { loading, error, makeRequest, clearError } = useHttp();
+  const { process, succeedProcess, makeRequest, clearError } = useHttp();
 
   const apiBaseUrl = "https://gateway.marvel.com:443/v1/public/";
   const apiKey = "2e9ee17fead394f8530840f46b85235d";
@@ -79,8 +79,8 @@ function useMarvelService() {
   );
 
   return {
-    loading,
-    error,
+    process,
+    succeedProcess,
     getHero,
     getHeroes,
     getComics,

@@ -3,18 +3,21 @@ import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 
 import useMarvelService from "../services/MarvelService";
+import getContent from "../utils/getContent";
+
 import ComicBanner from "../components/Comics/ComicBanner";
 import Comic from "../components/Comics/Comic";
 import Spinner from "../components/UI/Spinner";
-import ErrorMessage from "../components/UI/ErrorMessage";
 
 function ComicPage() {
   const { comicId } = useParams();
   const [comic, setComic] = useState(null);
-  const { loading, error, getComic } = useMarvelService();
+  const { process, succeedProcess, getComic } = useMarvelService();
 
   const loadComic = () => {
-    getComic(comicId).then((comic) => setComic(comic));
+    getComic(comicId)
+      .then((comic) => setComic(comic))
+      .then(succeedProcess);
   };
 
   useEffect(() => {
@@ -28,12 +31,12 @@ function ComicPage() {
         <title>{comic ? comic.title : "Marvel information portal"}</title>
       </Helmet>
       <ComicBanner />
-      {loading ? (
-        <Spinner />
-      ) : error ? (
-        <ErrorMessage />
-      ) : (
-        comic && <Comic {...comic} />
+      {getContent(
+        process,
+        () => (
+          <Comic {...comic} />
+        ),
+        Spinner
       )}
     </>
   );

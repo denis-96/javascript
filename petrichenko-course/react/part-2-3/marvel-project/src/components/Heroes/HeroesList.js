@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 
 import "./HeroesList.scss";
@@ -8,22 +8,38 @@ import useMarvelService from "../../services/MarvelService";
 import HeroCard from "./HeroCard";
 import Button from "../UI/Button";
 import Spinner from "../UI/Spinner";
-import ErrorMessage from "../UI/ErrorMessage";
+import getContent from "../../utils/getContent";
 
-function HeroesList(props) {
+// const getContent = (process, SucceedComponent) => {
+//   switch (process) {
+//     case "waiting":
+//       return <Spinner />;
+//     case "loading":
+//       return (
+//         <>
+//           <SucceedComponent />
+//           <Spinner />
+//         </>
+//       );
+//     case "succeeded":
+//       return <SucceedComponent />;
+//     case "failed":
+//       return <ErrorMessage />;
+//     default:
+//       throw new Error("Unexpected process");
+//   }
+// };
+
+function HeroesList({ onHeroSelect }) {
   const [heroes, setHeroes] = useState([]);
   const [offset, setOffset] = useState(210);
   const [allHeroesLoaded, setAllHeroesLoaded] = useState(false);
 
-  const { loading, error, getHeroes } = useMarvelService();
+  const { process, succeedProcess, getHeroes } = useMarvelService();
 
   const updateHeroesList = () => {
-    getHeroes(offset).then(onHeroesLoaded);
+    getHeroes(offset).then(onHeroesLoaded).then(succeedProcess);
   };
-
-  useEffect(() => {
-    updateHeroesList();
-  }, []);
 
   const onHeroesLoaded = (loadedHeroes) => {
     setHeroes((heroes) => [...heroes, ...loadedHeroes]);
@@ -31,19 +47,33 @@ function HeroesList(props) {
     setAllHeroesLoaded(loadedHeroes.length < 9);
   };
 
-  const { onHeroSelect } = props;
+  useEffect(() => {
+    updateHeroesList();
+  }, []);
+
+  const componentContent = useMemo(
+    () =>
+      getContent(
+        process,
+        () => <HeroesGrid heroes={heroes} onHeroSelect={onHeroSelect} />,
+        Spinner,
+        () => (
+          <>
+            <HeroesGrid heroes={heroes} onHeroSelect={onHeroSelect} />
+            <Spinner />
+          </>
+        )
+      ),
+    [process, heroes]
+  );
+
   return (
     <div className="heroes__list">
-      {error ? (
-        <ErrorMessage />
-      ) : (
-        <HeroesGrid heroes={heroes} onHeroSelect={onHeroSelect} />
-      )}
-      {loading && <Spinner />}
+      {componentContent}
       <Button
         style={{ display: allHeroesLoaded ? "none" : "block" }}
         onClick={updateHeroesList}
-        disabled={loading}
+        disabled={process === "loading"}
         text="load more"
         type="main"
         isLong

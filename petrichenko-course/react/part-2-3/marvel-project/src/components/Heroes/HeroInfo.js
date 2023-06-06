@@ -4,23 +4,22 @@ import PropTypes from "prop-types";
 import "./HeroInfo.scss";
 
 import useMarvelService from "../../services/MarvelService";
+import getContent from "../../utils/getContent";
 
 import Button from "../UI/Button";
 import Skeleton from "../UI/Skeleton";
-import Spinner from "../UI/Spinner";
-import ErrorMessage from "../UI/ErrorMessage";
 
 function HeroInfo({ heroId }) {
   const [hero, setHero] = useState(null);
 
-  const { loading, error, getHero, clearError } = useMarvelService();
+  const { process, succeedProcess, getHero, clearError } = useMarvelService();
 
   const updateHeroInfo = () => {
     if (!heroId) return;
     clearError();
-    getHero(heroId).then((hero) => {
-      setHero(hero);
-    });
+    getHero(heroId)
+      .then((hero) => setHero(hero))
+      .then(succeedProcess);
   };
 
   useEffect(() => {
@@ -29,14 +28,12 @@ function HeroInfo({ heroId }) {
 
   return (
     <div className="hero__info">
-      {loading ? (
-        <Spinner />
-      ) : error ? (
-        <ErrorMessage />
-      ) : hero ? (
-        <View hero={hero} />
-      ) : (
-        <HeroInfoSkeleton />
+      {getContent(
+        process,
+        () => (
+          <View hero={hero} />
+        ),
+        HeroInfoSkeleton
       )}
     </div>
   );

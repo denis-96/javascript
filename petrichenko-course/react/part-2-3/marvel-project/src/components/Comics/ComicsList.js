@@ -2,21 +2,21 @@ import { useState, useEffect } from "react";
 import "./ComicsList.scss";
 
 import useMarvelService from "../../services/MarvelService";
+import getContent from "../../utils/getContent";
 
 import ComicCard from "./ComicCard";
 import Button from "../UI/Button";
 import Spinner from "../UI/Spinner";
-import ErrorMessage from "../UI/ErrorMessage";
 
 function ComicsList() {
   const [comics, setComics] = useState([]);
   const [offset, setOffset] = useState(210);
   const [allComicsLoaded, setAllComicsLoaded] = useState(false);
 
-  const { loading, error, getComics } = useMarvelService();
+  const { process, succeedProcess, getComics } = useMarvelService();
 
   const updateComicsList = () => {
-    getComics(offset).then(onComicsLoaded);
+    getComics(offset).then(onComicsLoaded).then(succeedProcess);
   };
 
   useEffect(() => {
@@ -31,12 +31,23 @@ function ComicsList() {
 
   return (
     <div className="comics__list">
-      {error ? <ErrorMessage /> : <ComicsGrid comics={comics} />}
-      {loading && <Spinner />}
+      {getContent(
+        process,
+        () => (
+          <ComicsGrid comics={comics} />
+        ),
+        Spinner,
+        () => (
+          <>
+            <ComicsGrid comics={comics} />
+            <Spinner />
+          </>
+        )
+      )}
       <Button
         style={{ display: allComicsLoaded ? "none" : "block" }}
         onClick={updateComicsList}
-        disabled={loading}
+        disabled={process === "loading"}
         text="load more"
         type="main"
         isLong
