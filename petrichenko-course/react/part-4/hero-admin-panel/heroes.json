@@ -1,0 +1,30 @@
+{
+  "heroes": [],
+  "filters": [
+    {
+      "id": "all",
+      "title": "Все",
+      "color": "outline-dark"
+    },
+    {
+      "id": "fire",
+      "title": "Огонь",
+      "color": "danger"
+    },
+    {
+      "id": "water",
+      "title": "Вода",
+      "color": "primary"
+    },
+    {
+      "id": "wind",
+      "title": "Ветер",
+      "color": "success"
+    },
+    {
+      "id": "earth",
+      "title": "Земля",
+      "color": "secondary"
+    }
+  ]
+}
