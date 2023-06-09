@@ -1,3 +1,4 @@
+/*
 const initialState = {
   filters: [],
   filtersLoadingStatus: "idle",
@@ -40,3 +41,4 @@ const filters = (state = initialState, action) => {
 };
 
 export default filters;
+*/

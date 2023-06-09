@@ -1,5 +1,12 @@
 {
-  "heroes": [],
+  "heroes": [
+    {
+      "name": "fdfdfdf",
+      "description": "dgfgdfgf",
+      "element": "wind",
+      "id": "9af5484d-d73c-4bac-b79f-733786f9e962"
+    }
+  ],
   "filters": [
     {
       "id": "all",

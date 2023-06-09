@@ -7,7 +7,7 @@
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { filterAdded, filterRemoved } from "../../actions";
+import { filterAdded, filterRemoved } from "../../slices/filters";
 
 import Spinner from "../spinner/Spinner";
 

@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuid } from "uuid";
 
 import { useHttp } from "../../hooks/http.hook";
-import { heroCreated } from "../../actions";
+import { heroCreated } from "../../slices/heroes";
 
 const HeroesAddForm = () => {
   const [heroData, setHeroData] = useState({

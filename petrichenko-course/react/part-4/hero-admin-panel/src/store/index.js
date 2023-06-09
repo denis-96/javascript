@@ -1,11 +1,7 @@
-import {
-  legacy_createStore as createStore,
-  combineReducers,
-  compose,
-  applyMiddleware,
-} from "redux";
-import heroes from "../reducers/heroes";
-import filters from "../reducers/filters";
+import { configureStore } from "@reduxjs/toolkit";
+
+import heroes from "../slices/heroes";
+import filters from "../slices/filters";
 
 const stringMiddleware = () => (next) => (action) => {
   if (typeof action === "string") {
@@ -14,6 +10,16 @@ const stringMiddleware = () => (next) => (action) => {
   return next(action);
 };
 
+const store = configureStore({
+  reducer: { heroes, filters },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(stringMiddleware),
+  devTools: process.env.NODE_ENV !== "production",
+});
+
+export default store;
+
+/*
 const enhancer =
   (createStore) =>
   (...args) => {
@@ -27,16 +33,4 @@ const enhancer =
     };
     return store;
   };
-
-const store = createStore(
-  combineReducers({ heroes, filters }),
-  compose(
-    applyMiddleware(stringMiddleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
-  // compose(
-  //   enhancer,
-  //   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  // )
-);
-export default store;
+*/
