@@ -12,7 +12,7 @@ const heroesAdaptor = createEntityAdapter();
 const initialState = {
   heroes: [],
   heroesLoadingStatus: "idle",
-};
+}
 */
 
 const initialState = heroesAdaptor.getInitialState({
